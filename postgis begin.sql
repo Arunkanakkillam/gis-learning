@@ -56,3 +56,26 @@ select st_srid (geom) from line_only
 
 select st_area(geom) as area from polygon_only
 select st_area(st_transform (geom,32643)) as area_inM2 from polygon_only
+
+
+
+
+
+SELECT * FROM public.landmarks
+ORDER BY id ASC 
+select a.name as line_name,
+	   b.name as polygon_name,
+	   st_distance(st_transform(a.geom,32643),st_transform(b.geom,32643)) as distancin_m
+	   from(select * from line_only order by id limit 2) a
+	   cross join (select * from polygon_only order by id limit 2) b;
+
+
+	   select id, st_astext(geom), osm_id,name,type,population from places
+	   select st_astext(st_transform(geom,3678)) from places where population is not null
+
+
+select id , st_astext(st_transform(geom,3678)),osm_id,name,ref,type,oneway,bridge,maxspeed from roads
+
+
+select r.name from roads r join places p
+ on st_dwithin(st_transform(r.geom,3678),st_transform(p.geom,3678),300) where p.population is not null and r.name is not null

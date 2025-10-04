@@ -79,3 +79,22 @@ select id , st_astext(st_transform(geom,3678)),osm_id,name,ref,type,oneway,bridg
 
 select r.name from roads r join places p
  on st_dwithin(st_transform(r.geom,3678),st_transform(p.geom,3678),300) where p.population is not null and r.name is not null
+
+
+ SELECT * FROM public.landmarks
+ORDER BY id ASC 
+
+select * from roads
+select name,osm_id,st_astext(geom) as geom from roads where name is not null
+select name,count( name  ) from roads where name is not null  group by name
+having count(name)>1 order by count(name) desc
+
+select * from landuse
+
+select r.name as road_naem,p.name as point_name from roads r
+join points p
+on st_intersects(r.geom,p.geom) where p.name is not null and r.name is not null
+
+select r.name as road_naem,p.name as point_name, st_intersection(r.geom,p.geom) as geom from roads r
+join railways p
+on st_intersects(r.geom,p.geom) where p.name is not null and r.name is not null
